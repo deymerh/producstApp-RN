@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Navigator } from './src/navigator/Navigator';
 import { AuthProvider } from './src/context/AuthContext';
+import { ProductsContextProvider } from './src/context/ProductsContext';
 
 interface AppStateProps {
   children: JSX.Element | JSX.Element[];
@@ -12,7 +13,9 @@ interface AppStateProps {
 const AppState = ({ children }: AppStateProps) => {
   return (
     <AuthProvider>
-      {children}
+      <ProductsContextProvider>
+        {children}
+      </ProductsContextProvider>
     </AuthProvider>
   )
 }
