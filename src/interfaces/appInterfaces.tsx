@@ -43,7 +43,7 @@ export interface Producto {
   precio: number;
   _id: string;
   nombre: string;
-  categoria: null;
+  categoria: Categoria;
   usuario: Usuario;
   img?: string;
 }

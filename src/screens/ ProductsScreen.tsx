@@ -13,7 +13,11 @@ export const ProductsScreen = ({ navigation }: Props) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity activeOpacity={0.5} style={{ marginRight: 10 }}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={{ marginRight: 10 }}
+          onPress={() => navigation.navigate('ProductScreen', {})}
+        >
           <Text style={{ color: 'black' }}>Agregar</Text>
         </TouchableOpacity>
       )

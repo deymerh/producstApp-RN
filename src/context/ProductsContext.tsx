@@ -28,11 +28,18 @@ export const ProductsContextProvider = ({ children }: ProductsContextProviderPro
     const resp = await cafeApi.get<ProductsResponse>('/productos?limite=50');
     setProducts([...resp.data.productos]);
   }
-  const addProduct = async (category: string, productName: string) => { }
-  const updateProduct = async (category: string, productName: string, idProduct: string) => { }
-  const loadProductById = async (idProduct: string) => {
-    throw new Error('Not implement');
+  const addProduct = async (categoryId: string, productName: string) => {
+    console.log('addProduct: ', { categoryId, productName });
   }
+  const updateProduct = async (categoryId: string, productName: string, idProduct: string) => {
+    console.log('updateProduct: ', { categoryId, productName, idProduct })
+  }
+
+  const loadProductById = async (idProduct: string): Promise<Producto> => {
+    const resp = await cafeApi.get<Producto>(`/productos/${idProduct}`);
+    return resp.data;
+  }
+
   const uploadImage = async (data: any, id: string) => { } //TODO: change type any
   return (
     <ProductsContext.Provider value={{
