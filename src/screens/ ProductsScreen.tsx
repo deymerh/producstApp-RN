@@ -25,7 +25,7 @@ export const ProductsScreen = ({ navigation }: Props) => {
   }, []);
 
   return (
-    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, marginHorizontal: 20 }}>
+    <View style={{ flex: 1, marginHorizontal: 20 }}>
       <FlatList
         data={products}
         keyExtractor={(p) => p._id}
@@ -50,11 +50,11 @@ export const ProductsScreen = ({ navigation }: Props) => {
 
 const styles = StyleSheet.create({
   productName: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'black'
   },
   itemSeparator: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     marginVertical: 5,
     borderBottomColor: 'rgba(0,0,0,0.5)'
   }

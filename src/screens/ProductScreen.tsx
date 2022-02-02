@@ -41,14 +41,15 @@ export const ProductScreen = ({ route, navigation }: Props) => {
       nombre
     })
   }
-  const saveOrUpdate = () => {
+  const saveOrUpdate = async () => {
     if (id?.length! > 0) {
       console.log('Estoy actualizando');
       updateProduct(categoriaId, nombre!, id!)
     } else {
       console.log('Estoy guardando');
-      const tempCategoryId = categoriaId || categories[0]._id
-      addProduct(tempCategoryId, nombre!);
+      const tempCategoryId = categoriaId || categories[0]._id;
+      const newProduct = await addProduct(tempCategoryId, nombre!)
+      onChange(newProduct._id, '_id');
     }
   }
   return (
@@ -85,7 +86,7 @@ export const ProductScreen = ({ route, navigation }: Props) => {
           color='#5856d6'
         />
         {
-          (id?.length! > 0) && (
+          (_id?.length! > 0) && (
             <View
               style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10, }}
             >
