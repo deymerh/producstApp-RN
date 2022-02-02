@@ -36,7 +36,7 @@ export const ProductsContextProvider = ({ children }: ProductsContextProviderPro
   }
   const updateProduct = async (categoryId: string, productName: string, idProduct: string) => {
     console.log('updateProduct: ', { categoryId, productName, idProduct });
-    const resp = await cafeApi.post<Producto>(`/productos/${idProduct}`, { categoria: categoryId, nombre: productName });
+    const resp = await cafeApi.put<Producto>(`/productos/${idProduct}`, { categoria: categoryId, nombre: productName });
     setProducts(products.map(product => (product._id === idProduct) ? resp.data : product));
   }
 
