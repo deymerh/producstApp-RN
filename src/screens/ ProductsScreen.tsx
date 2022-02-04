@@ -25,11 +25,9 @@ export const ProductsScreen = ({ navigation }: Props) => {
     })
   }, []);
   const loadProductsFromBacked = async () => {
-    console.log('Cargando...');
     setRefresing(true);
     await loadProducts();
     setRefresing(false);
-    console.log('Carga terminada...');
   }
   return (
     <View style={{ flex: 1, marginHorizontal: 20 }}>

@@ -1,8 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View, ScrollView, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { Picker } from '@react-native-picker/picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import { ProductsStackParams } from '../navigator/ProductsNavigator';
 import { useCategories } from '../hooks/useCategories';
@@ -12,7 +13,8 @@ import { ProductsContext } from '../context/ProductsContext';
 interface Props extends StackScreenProps<ProductsStackParams, 'ProductScreen'> { };
 
 export const ProductScreen = ({ route, navigation }: Props) => {
-  const { loadProductById, addProduct, updateProduct } = useContext(ProductsContext);
+  const { loadProductById, addProduct, updateProduct, uploadImage } = useContext(ProductsContext);
+  const [pothoTemUri, setPothoTemUri] = useState<string>();
   const { categories, isLoading } = useCategories();
   const { id, name } = route.params;
   const { _id, categoriaId, nombre, img, form, onChange, setFormValue } = useForm({
@@ -33,7 +35,6 @@ export const ProductScreen = ({ route, navigation }: Props) => {
   const loadProduct = async () => {
     if (id?.length === 0) return;
     const product = await loadProductById(id!);
-    console.log(product)
     setFormValue({
       _id: id,
       categoriaId: product.categoria._id,
@@ -43,14 +44,24 @@ export const ProductScreen = ({ route, navigation }: Props) => {
   }
   const saveOrUpdate = async () => {
     if (id?.length! > 0) {
-      console.log('Estoy actualizando');
       updateProduct(categoriaId, nombre!, id!)
     } else {
-      console.log('Estoy guardando');
       const tempCategoryId = categoriaId || categories[0]._id;
       const newProduct = await addProduct(tempCategoryId, nombre!)
       onChange(newProduct._id, '_id');
     }
+  }
+  const takePhoto = () => {
+    launchCamera({
+      mediaType: 'photo',
+      quality: 1
+    }, (res) => {
+      if (res.didCancel) return;
+      if (!res.assets![0].uri) return;
+      // console.log(res);
+      setPothoTemUri(res.assets![0].uri);
+      uploadImage(res, _id!);
+    });
   }
   return (
     <View style={styles.container}>
@@ -99,17 +110,31 @@ export const ProductScreen = ({ route, navigation }: Props) => {
               <View style={{ width: 10 }} />
               <Button
                 title='Camara'
-                onPress={() => { }}
+                onPress={takePhoto}
                 color='#5856d6'
               />
             </View>
           )
         }
         {
-          (img.length) > 0 &&
+          (img.length && !pothoTemUri) > 0 &&
           (<Image
             source={{ uri: img }}
             style={{
+              width: '100%',
+              height: 300,
+              marginTop: 20,
+              borderRadius: 10,
+            }}
+          />)
+        }
+        {
+          (pothoTemUri) &&
+          (<Image
+            source={{ uri: pothoTemUri }}
+            style={{
+              marginTop: 20,
+              borderRadius: 10,
               width: '100%',
               height: 300
             }}
